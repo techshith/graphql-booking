@@ -1,3 +1,4 @@
+const Event = require('../../models/event');
 module.exports = {
     events: () => {
       return [];
@@ -5,13 +6,25 @@ module.exports = {
     bookings: () => {
       return [];
     },
-    createEvent: args => {
-      return {
-        ...args.eventInput,
-        _id: Math.random().toString(),
-        date: new Date().toISOString()
-      };
-    },
+    createEvent: async (args, req) => {
+        const event = new Event({
+          title: args.eventInput.title,
+          description: args.eventInput.description,
+          price: +args.eventInput.price,
+          date: new Date(args.eventInput.date),
+          creator: null  // We'll update this in a future commit when we have users
+        });
+      
+        try {
+          const result = await event.save();
+          return {
+            ...result._doc,
+            _id: result.id
+          };
+        } catch (err) {
+          throw err;
+        }
+    }      
     createUser: args => {
       return {
         _id: Math.random().toString(),
