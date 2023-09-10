@@ -1,5 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
+import EventsPage from './pages/Events/Events';
+<Route path="/events" element={<EventsPage />} />
 
 function App() {
   return (
