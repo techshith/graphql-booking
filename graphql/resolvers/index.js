@@ -1,10 +1,46 @@
+const DataLoader = require('dataloader');
+const User = require('../../models/user');
 const Event = require('../../models/event');
+const Booking = require('../../models/booking');
+// Batch function for user loading
+const userLoader = new DataLoader(userIds => {
+  return User.find({ _id: { $in: userIds } });
+});
+
+// Batch function for event loading
+const eventLoader = new DataLoader(eventIds => {
+  return Event.find({ _id: { $in: eventIds } });
+});
 module.exports = {
     events: () => {
       return [];
     },
-    bookings: () => {
-      return [];
+
+bookings: async (args, req) => {
+  if (!req.isAuth) {
+    throw new Error('Unauthenticated!');
+  }
+
+  try {
+    const bookings = await Booking.find({ user: req.userId }).populate('event');
+    return bookings.map(booking => {
+      return {
+        ...booking._doc,
+        _id: booking.id,
+        event: {
+          ...booking._doc.event._doc,
+          _id: booking._doc.event.id
+        },
+        user: booking._doc.user,
+        createdAt: booking._doc.createdAt.toISOString(),
+        updatedAt: booking._doc.updatedAt.toISOString()
+      };
+    });
+  } catch (err) {
+    throw err;
+  }
+}
+
     },
     createEvent: async (args, req) => {
         const event = new Event({

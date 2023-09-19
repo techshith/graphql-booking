@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dataloader": "^2.2.3"
+  }
+}
