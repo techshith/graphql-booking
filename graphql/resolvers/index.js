@@ -3,14 +3,23 @@ const User = require('../../models/user');
 const Event = require('../../models/event');
 const Booking = require('../../models/booking');
 // Batch function for user loading
-const userLoader = new DataLoader(userIds => {
-  return User.find({ _id: { $in: userIds } });
+const userLoader = new DataLoader(async userIds => {
+    const users = await User.find({ _id: { $in: userIds } });
+  
+    return userIds.map(id =>
+      users.find(user => user._id.toString() === id.toString())
+    );
 });
+  
 
 // Batch function for event loading
-const eventLoader = new DataLoader(eventIds => {
-  return Event.find({ _id: { $in: eventIds } });
-});
+const eventLoader = new DataLoader(async eventIds => {
+    const events = await Event.find({ _id: { $in: eventIds } });
+  
+    return eventIds.map(id =>
+      events.find(event => event._id.toString() === id.toString())
+    );
+});  
 module.exports = {
     events: () => {
       return [];
