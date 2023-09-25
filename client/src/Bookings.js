@@ -12,14 +12,17 @@ const BookingsPage = () => {
       query: `
         query {
           bookings {
+          bookings {
             _id
             createdAt
             event {
-              _id
-              title
-              date
+                _id
+                title
+                date
+                creator {
+                email
+                }
             }
-          }
         }
       `
     };
@@ -88,11 +91,12 @@ const BookingsPage = () => {
       <ul>
         {bookings.map(booking => (
           <li key={booking._id}>
-            <strong>{booking.event.title}</strong> <br />
-            <em>{new Date(booking.event.date).toLocaleString()}</em> <br />
-            Booked At: {new Date(booking.createdAt).toLocaleString()} <br />
-            <button onClick={() => cancelBookingHandler(booking._id)}>Cancel</button>
-          </li>
+          <strong>{booking.event.title}</strong><br />
+          <em>{new Date(booking.event.date).toLocaleString()}</em><br />
+          Booked At: {new Date(booking.createdAt).toLocaleString()}<br />
+          Event Host: {booking.event.creator?.email}<br />
+          <button onClick={() => cancelBookingHandler(booking._id)}>Cancel</button>
+        </li>        
         ))}
       </ul>
     </div>
