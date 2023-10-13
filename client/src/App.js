@@ -1,29 +1,48 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import { StateProvider } from './contexts/state-context';
+import Layout from './components/Layout/Layout';
+import Routes from './Routes';
 import './App.css';
-import EventsPage from './pages/Events/Events';
-import BookingsPage from './pages/Bookings/Bookings';
 
-<><Route path="/events" element={<EventsPage />} /><Route path="/bookings" element={<BookingsPage />} /></>
+const App = () => {
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const initialState = {
+		token: null,
+		userId: null,
+	};
+
+	const reducer = (state, action) => {
+		switch (action.type) {
+			case 'login':
+				return {
+					...state,
+					token: action.token,
+					userId: action.userId,
+					email: action.email
+				};
+			
+			case 'logout':
+				return {
+					...state,
+					token: null,
+					userId: null
+				};
+
+			default:
+				return state;
+		}
+	};
+
+	return (
+		<BrowserRouter>
+			<StateProvider initialState={initialState} reducer={reducer}>
+				<Layout>
+					<Routes />
+				</Layout>
+			</StateProvider>
+		</BrowserRouter>
+	);
 }
 
 export default App;
