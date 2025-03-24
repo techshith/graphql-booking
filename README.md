@@ -1,14 +1,14 @@
-# Event Booking App
+# Event Booking Application
 
-This is a full-stack event booking application built with GraphQL, React, Node.js, and MongoDB.
+This is a full-stack event booking application built using GraphQL, React, Node.js, and MongoDB.
 
 It allows users to:
---Sign up and log in
+-- User Sign up and log in
 -- Create and view events
 -- Book events
--- See and cancel their own bookings
+-- View and cancel bookings
 
-# Tech Stack
+# Tech Stack used
 
 - **Frontend**: React + Context API
 - **Backend**: Node.js, Express, GraphQL
